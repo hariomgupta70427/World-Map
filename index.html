@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Interactive World Map</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>World Explorer</h1>
+    </header>
+    
+    <main>
+        <div class="map-container">
+            <!-- Embed the SVG map here -->
+            <!-- Either include the SVG inline, or link the SVG/XML file here -->
+            <object id="world-map" type="image/svg+xml" data="world_updated_with_titles.xml">
+                Your browser does not support SVGs.
+            </object>
+        </div>
+        
+        <div id="info-box" class="hidden">
+            <p id="country-name">Country Name</p>
+            <!-- Add more info such as population, time, weather, etc., later -->
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 World Explorer. All Rights Reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
