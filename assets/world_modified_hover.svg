@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created for MapSVG plugin: http://mapsvg.com -->
+
 <svg
    xmlns:mapsvg="http://mapsvg.com"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -19,6 +19,20 @@
     }
     path:hover {
       fill: #ffcc00;
+    }
+     svg path {
+        cursor: pointer;
+    }
+    #title {
+        position: absolute;
+        background-color: rgb(255, 255, 255);
+        width: fit-content;
+        opacity: 0;
+        border-radius: 5px;
+        border: 3px solid rgb(245, 128, 128);
+        padding: 0px 5px;
+        font-size: 1.5rem;
+
     }
   </style>
 
