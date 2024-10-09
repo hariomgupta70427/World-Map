@@ -42,24 +42,37 @@ main {
     width: 100%;
     height: auto;
     border: 2px solid #ccc;
+    background-color: #22598f;
 }
 
 #info-box {
     position: absolute;
     top: 10px;
     left: 10px;
-    background-color: rgba(255, 255, 255, 0.9);#info-box p {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    display: none;
+    transition: opacity 0.3s ease, display 0s ease;
+
+    
+    #info-box p {
         margin: 0;
     }
     
-    #info-box.hidden {
-        opacity: 0;
-        display: none;
-    }
-    
     #info-box.show {
-        opacity: 1;
-    }
+    opacity: 1;
+    display: block;
+}
+
+#info-box.hidden {
+    opacity: 0;
+    display: none;
+}
+
     
     border: 1px solid #ccc;
     padding: 10px;
@@ -77,3 +90,4 @@ footer {
     background-color: #003366;
     color: #fff;
 }
+

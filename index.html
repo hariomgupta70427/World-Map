@@ -8,21 +8,26 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <?xml version="1.0"?>   
     <header>
         <h1>World Explorer</h1>
     </header>
-    
+
     <main>
         <div class="map-container">
-            <!-- Link to the external SVG/XML file in the assets folder -->
+            <!-- Embed the SVG map -->
             <object id="world-map" type="image/svg+xml" data="assets/world_modified_hover.svg"></object>
-                           
-        
-            </object>
-        </div>       
-        <div id="info-box" class="hidden">
-            <p id="country-name">Country Name</p>
+        </div>
+
+        <!-- Sidebar to display country details -->
+        <div id="country-details" class="sidebar hidden">
+            <h2 id="country-name">Country Name</h2>
+            <ul>
+                <li>Capital: <span id="country-capital">Capital City</span></li>
+                <li>Time: <span id="country-time">Local Time</span></li>
+                <li>Population: <span id="country-population">Population</span></li>
+                <li>Weather: <span id="country-weather">Weather</span></li>
+            </ul>
+            <button id="close-sidebar">Close</button>
         </div>
     </main>
 
