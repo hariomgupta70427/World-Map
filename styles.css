@@ -8,9 +8,8 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
     color: #333;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
 header {
@@ -80,14 +79,65 @@ main {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* General styling */
 
 
 
+/* Sidebar styling */
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -350px; /* Initially hidden */
+    width: 300px;
+    height: 100%;
+    background-color: white;
+    border-left: 3px solid #003366;
+    padding: 20px;
+    box-shadow: -4px 0 8px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease;
+    z-index: 100;
+}
+
+.sidebar.show {
+    right: 0;
+}
+
+.sidebar.hidden {
+    right: -350px;
+}
+
+.sidebar h2 {
+    color: #003366;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+button#close-sidebar {
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+button#close-sidebar:hover {
+    background-color: #cc0000;
+}
 
 footer {
     text-align: center;
     padding: 10px;
     background-color: #003366;
-    color: #fff;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
-

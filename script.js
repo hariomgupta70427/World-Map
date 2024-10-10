@@ -38,3 +38,46 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+document.addEventListener("DOMContentLoaded", function () {
+    const svgObject = document.getElementById("world-map");
+    const sidebar = document.getElementById("country-details");
+    const countryNameElement = document.getElementById("country-name");
+    const countryCapitalElement = document.getElementById("country-capital");
+    const countryTimeElement = document.getElementById("country-time");
+    const countryPopulationElement = document.getElementById("country-population");
+    const countryWeatherElement = document.getElementById("country-weather");
+    const closeSidebarButton = document.getElementById("close-sidebar");
+
+    // Ensure the SVG is fully loaded before adding event listeners
+    svgObject.addEventListener("load", function () {
+        const svgDoc = svgObject.contentDocument; // Access the inner SVG document
+        const countries = svgDoc.querySelectorAll("path, polygon"); // Select all country paths
+
+        countries.forEach(country => {
+            country.addEventListener("click", function () {
+                const countryName = country.getAttribute("id") || country.querySelector("title")?.textContent;
+
+                if (countryName) {
+                    // Set the country name in the sidebar
+                    countryNameElement.textContent = countryName;
+
+                    // Placeholder for other country details
+                    countryCapitalElement.textContent = "N/A"; // Replace with actual data
+                    countryTimeElement.textContent = "N/A"; // Replace with actual time
+                    countryPopulationElement.textContent = "N/A"; // Replace with actual population
+                    countryWeatherElement.textContent = "N/A"; // Replace with actual weather
+
+                    // Show the sidebar
+                    sidebar.classList.remove("hidden");
+                    sidebar.classList.add("show");
+                }
+            });
+        });
+    });
+
+    // Close sidebar when "Close" button is clicked
+    closeSidebarButton.addEventListener("click", function () {
+        sidebar.classList.remove("show");
+        sidebar.classList.add("hidden");
+    });
+});
