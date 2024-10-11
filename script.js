@@ -1,74 +1,57 @@
-// Wait for DOM content to be fully loaded
 document.addEventListener("DOMContentLoaded", function () {
-    const svgObject = document.getElementById("world-map");
-    const infoBox = document.getElementById("info-box");
-    const countryNameElement = document.getElementById("country-name");
+    const svgObject = document.getElementById("world-map"); // The embedded SVG map
+    const infoBox = document.getElementById("info-box"); // Floating info box for hover
+    const sidebar = document.getElementById("country-details"); // Sidebar for clicked country details
+    const sidebarCountryName = document.getElementById("country-name"); // Country name in sidebar
+    const closeSidebarButton = document.getElementById("close-sidebar"); // Sidebar close button
 
-    // Ensure the SVG is fully loaded before manipulating it
+    let selectedCountry = null; // To track the clicked country
+
+    // Wait until the SVG map is fully loaded
     svgObject.addEventListener("load", function () {
-        const svgDoc = svgObject.contentDocument; // Access the SVG's inner document
-        const countries = svgDoc.querySelectorAll("path, polygon"); // Select all country paths and polygons
+        const svgDoc = svgObject.contentDocument; // Access the SVG document inside the object
+        const countries = svgDoc.querySelectorAll("path, polygon"); // Select all country paths/polygons
 
-        // Handle mouseover to show country name in the floating info box
+        // Hover: Show country name in floating info box
         countries.forEach(country => {
             country.addEventListener("mouseover", function () {
-                const countryName = country.getAttribute("title") || country.querySelector("id")?.textContent;
+                const countryTitle = country.querySelector("title")?.textContent; // Use the <title> element in the SVG for the country name
 
-                if (countryName) {
-                    // Update country name in the info box
-                    countryNameElement.textContent = countryName;
+                if (countryTitle) {
+                    // Display country name in the hover info box
+                    infoBox.textContent = countryTitle;
 
-                    // Show the info box
+                    // Show and position the info box
                     infoBox.classList.remove("hidden");
                     infoBox.classList.add("show");
-                }
 
-                // Move the info box with mouse movement
-                window.onmousemove = function (event) {
-                    const x = event.clientX;
-                    const y = event.clientY;
-                    infoBox.style.top = `${y - 60}px`;
-                    infoBox.style.left = `${x + 10}px`;
-                };
+                    // Move the info box with the mouse
+                    window.onmousemove = function (event) {
+                        const x = event.clientX;
+                        const y = event.clientY;
+                        infoBox.style.top = `${y - 60}px`;
+                        infoBox.style.left = `${x + 10}px`;
+                    };
+                }
             });
 
-            // Hide the info box when the mouse leaves the country
+            // Hide info box when the mouse leaves the country
             country.addEventListener("mouseout", function () {
                 infoBox.classList.add("hidden");
                 infoBox.classList.remove("show");
             });
-        });
-    });
-});
 
-// Handle sidebar functionality for detailed country information
-document.addEventListener("DOMContentLoaded", function () {
-    const svgObject = document.getElementById("world-map");
-    const sidebar = document.getElementById("country-details");
-    const countryNameElement = document.getElementById("country-name");
-    const countryCapitalElement = document.getElementById("country-capital");
-    const countryTimeElement = document.getElementById("country-time");
-    const countryPopulationElement = document.getElementById("country-population");
-    const countryWeatherElement = document.getElementById("country-weather");
-    const closeSidebarButton = document.getElementById("close-sidebar");
-
-    // Ensure the SVG is fully loaded before adding event listeners
-    svgObject.addEventListener("load", function () {
-        const svgDoc = svgObject.contentDocument; // Access the inner SVG document
-        const countries = svgDoc.querySelectorAll("path, polygon"); // Select all country paths and polygons
-
-        // Handle click event for country
-        countries.forEach(country => {
+            // Click: Open the sidebar with country details
             country.addEventListener("click", function () {
-                const countryName = country.getAttribute("id") || country.querySelector("title")?.textContent;
+                const countryTitle = country.querySelector("title")?.textContent; // Get the country name from <title>
 
-                if (countryName) {
-                    // Set country details in the sidebar
-                    countryNameElement.textContent = countryName;
-                    countryCapitalElement.textContent = "N/A"; // Replace with actual capital
-                    countryTimeElement.textContent = "N/A"; // Replace with actual local time
-                    countryPopulationElement.textContent = "N/A"; // Replace with actual population
-                    countryWeatherElement.textContent = "N/A"; // Replace with actual weather
+                if (countryTitle && selectedCountry !== countryTitle) {
+                    selectedCountry = countryTitle; // Track the clicked country
+
+                    // Update the sidebar with the clicked country name
+                    sidebarCountryName.textContent = countryTitle;
+
+                    // Placeholder for additional country details (fetch dynamically if needed)
 
                     // Show the sidebar
                     sidebar.classList.remove("hidden");
@@ -82,5 +65,6 @@ document.addEventListener("DOMContentLoaded", function () {
     closeSidebarButton.addEventListener("click", function () {
         sidebar.classList.remove("show");
         sidebar.classList.add("hidden");
+        selectedCountry = null; // Reset the selected country when closing the sidebar
     });
 });

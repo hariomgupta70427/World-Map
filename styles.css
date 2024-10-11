@@ -46,16 +46,15 @@ main {
 
 #info-box {
     position: absolute;
-    top: 10px;
-    left: 10px;
     background-color: rgba(255, 255, 255, 0.9);
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     opacity: 0;
+    transition: opacity 0.3s ease;
     display: none;
-    transition: opacity 0.3s ease, display 0s ease;
+
 
     
     #info-box p {
@@ -63,9 +62,11 @@ main {
     }
     
     #info-box.show {
-    opacity: 1;
-    display: block;
+        opacity: 1;
+        display: block;
+    
 }
+
 
 #info-box.hidden {
     opacity: 0;
@@ -87,7 +88,7 @@ main {
 .sidebar {
     position: fixed;
     top: 0;
-    right: -350px; /* Initially hidden */
+    right: -350px;
     width: 300px;
     height: 100%;
     background-color: white;
