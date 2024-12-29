@@ -1,70 +1,153 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const svgObject = document.getElementById("world-map"); // The embedded SVG map
-    const infoBox = document.getElementById("info-box"); // Floating info box for hover
-    const sidebar = document.getElementById("country-details"); // Sidebar for clicked country details
-    const sidebarCountryName = document.getElementById("country-name"); // Country name in sidebar
-    const closeSidebarButton = document.getElementById("close-sidebar"); // Sidebar close button
+// Wait for the DOM to fully load
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOM fully loaded and parsed!");
 
-    let selectedCountry = null; // To track the clicked country
+    // Select main elements
+    const svgObject = document.getElementById("world-map"); // Embedded SVG map
+    const sidebar = document.getElementById("country-details"); // Sidebar element
+    const closeSidebarButton = document.getElementById("close-sidebar"); // Close button in sidebar
+    const mapContainer = document.querySelector(".map-container"); // Map container for dynamic resizing
+    const infoBox = document.createElement("div"); // Hover info box
+    infoBox.id = "info-box";
+    document.body.appendChild(infoBox);
 
-    // Wait until the SVG map is fully loaded
-    svgObject.addEventListener("load", function () {
-        const svgDoc = svgObject.contentDocument; // Access the SVG document inside the object
-        const countries = svgDoc.querySelectorAll("path, polygon"); // Select all country paths/polygons
+    // Sidebar Elements
+    const countryNameElement = document.getElementById("country-name");
+    const countryCapitalElement = document.getElementById("country-capital");
+    const countryTimeElement = document.getElementById("country-time");
+    const countryPopulationElement = document.getElementById("country-population");
+    const countryWeatherElement = document.getElementById("country-weather");
 
-        // Hover: Show country name in floating info box
-        countries.forEach(country => {
-            country.addEventListener("mouseover", function () {
-                const countryTitle = country.querySelector("title")?.textContent; // Use the <title> element in the SVG for the country name
+    // Ensure the SVG map is fully loaded
+    svgObject.addEventListener("load", () => {
+        console.log("SVG map loaded successfully!");
 
-                if (countryTitle) {
-                    // Display country name in the hover info box
-                    infoBox.textContent = countryTitle;
+        const svgDoc = svgObject.contentDocument; // Access the inner SVG document
+        const countries = svgDoc.querySelectorAll("path, polygon"); // Select all country shapes
 
-                    // Show and position the info box
-                    infoBox.classList.remove("hidden");
-                    infoBox.classList.add("show");
+        // Add event listeners to each country
+        countries.forEach((country) => {
+            // Mouseover: Show hover info box
+            country.addEventListener("mouseover", (event) => {
+                const countryName = country.getAttribute("title") || country.id || "Unknown Country";
+                infoBox.textContent = countryName;
+                infoBox.classList.add("show");
 
-                    // Move the info box with the mouse
-                    window.onmousemove = function (event) {
-                        const x = event.clientX;
-                        const y = event.clientY;
-                        infoBox.style.top = `${y - 60}px`;
-                        infoBox.style.left = `${x + 10}px`;
-                    };
-                }
+                // Position the info box
+                const x = event.clientX;
+                const y = event.clientY;
+                infoBox.style.top = `${y - 40}px`;
+                infoBox.style.left = `${x + 10}px`;
+
+                console.log(`Hovered over: ${countryName}`);
             });
 
-            // Hide info box when the mouse leaves the country
-            country.addEventListener("mouseout", function () {
-                infoBox.classList.add("hidden");
+            // Mouseout: Hide hover info box
+            country.addEventListener("mouseout", () => {
                 infoBox.classList.remove("show");
             });
 
-            // Click: Open the sidebar with country details
-            country.addEventListener("click", function () {
-                const countryTitle = country.querySelector("title")?.textContent; // Get the country name from <title>
+            // Click: Show country details in the sidebar
+            country.addEventListener("click", () => {
+                const countryName = country.getAttribute("title") || country.id || "Unknown Country";
 
-                if (countryTitle && selectedCountry !== countryTitle) {
-                    selectedCountry = countryTitle; // Track the clicked country
+                // Fetch and display country details
+                fetchCountryDetails(countryName);
 
-                    // Update the sidebar with the clicked country name
-                    sidebarCountryName.textContent = countryTitle;
+                // Show the sidebar and adjust map width
+                sidebar.classList.remove("hidden");
+                sidebar.classList.add("show");
+                mapContainer.classList.add("reduced");
 
-                    // Placeholder for additional country details (fetch dynamically if needed)
-
-                    // Show the sidebar
-                    sidebar.classList.remove("hidden");
-                    sidebar.classList.add("show");
-                }
+                console.log(`Clicked on: ${countryName}`);
             });
         });
     });
 
-    // Close the sidebar when the close button is clicked
-    closeSidebarButton.addEventListener("click", function () {
+    // Close sidebar on button click
+    closeSidebarButton.addEventListener("click", () => {
         sidebar.classList.remove("show");
         sidebar.classList.add("hidden");
-        selectedCountry = null; // Reset the selected country when closing the sidebar
+        mapContainer.classList.remove("reduced"); // Reset map width
+        console.log("Sidebar closed");
+    });
+
+    // Fetch country details from multiple APIs
+    async function fetchCountryDetails(countryName) {
+        console.log(`Fetching details for: ${countryName}`);
+
+        try {
+            // 1. Fetch country details from REST Countries API
+            const countryResponse = await fetch(`https://restcountries.com/v3.1/name/${countryName}`);
+            if (!countryResponse.ok) {
+                throw new Error("Country data not found!");
+            }
+            const countryData = await countryResponse.json();
+            const country = countryData[0]; // Take the first matching result
+
+            // Extract relevant data
+            const capital = country.capital ? country.capital[0] : "Not Available";
+            const population = country.population.toLocaleString();
+            const timezone = country.timezones ? country.timezones[0] : "Not Available";
+
+            // 2. Fetch local time from World Time API
+            let localTime = "Not Available";
+            if (timezone !== "Not Available") {
+                const timeResponse = await fetch(`http://worldtimeapi.org/api/timezone/${timezone}`);
+                if (timeResponse.ok) {
+                    const timeData = await timeResponse.json();
+                    localTime = timeData.datetime ? new Date(timeData.datetime).toLocaleTimeString() : "Not Available";
+                }
+            }
+
+            // 3. Fetch weather from OpenWeatherMap API
+            const weatherResponse = await fetch(
+                `https://api.openweathermap.org/data/2.5/weather?q=${capital}&appid=YOUR_API_KEY&units=metric`
+            );
+            let weather = "Not Available";
+            if (weatherResponse.ok) {
+                const weatherData = await weatherResponse.json();
+                weather = `${weatherData.main.temp}°C, ${weatherData.weather[0].description}`;
+            }
+
+            // Update sidebar with fetched data
+            countryNameElement.textContent = countryName;
+            countryCapitalElement.textContent = capital;
+            countryTimeElement.textContent = localTime;
+            countryPopulationElement.textContent = population;
+            countryWeatherElement.textContent = weather;
+
+            console.log("Real-time data successfully updated!");
+        } catch (error) {
+            console.error("Error fetching country details:", error);
+
+            // Display error message in the sidebar
+            countryNameElement.textContent = countryName;
+            countryCapitalElement.textContent = "Error fetching data";
+            countryTimeElement.textContent = "Error fetching data";
+            countryPopulationElement.textContent = "Error fetching data";
+            countryWeatherElement.textContent = "Error fetching data";
+        }
+    }
+
+    // Close sidebar when clicking outside
+    document.addEventListener("click", (event) => {
+        if (
+            !sidebar.contains(event.target) &&
+            !mapContainer.contains(event.target) &&
+            !event.target.closest("path, polygon")
+        ) {
+            sidebar.classList.remove("show");
+            mapContainer.classList.remove("reduced"); // Reset map width
+            console.log("Clicked outside, sidebar closed");
+        }
+    });
+
+    // Window resize handler for responsiveness
+    window.addEventListener("resize", () => {
+        console.log("Window resized");
+        if (window.innerWidth < 768) {
+            mapContainer.classList.remove("reduced"); // Reset map width for smaller screens
+        }
     });
 });

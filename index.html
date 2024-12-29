@@ -5,36 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Interactive World Map</title>
+    <!-- Linking CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Header Section -->
     <header>
         <h1>World Explorer</h1>
     </header>
 
+    <!-- Main Content -->
     <main>
         <div class="map-container">
-            <!-- Embed the SVG map -->
-            <object id="world-map" type="image/svg+xml" data="assets/world_modified_hover.svg"></object>
+            <!-- Embedded SVG Map -->
+            <object 
+                id="world-map" 
+                type="image/svg+xml" 
+                data="assets/world_modified_hover.svg" 
+                aria-label="Interactive World Map">
+            </object>
         </div>
 
-        <!-- Sidebar to display country details -->
-        <div id="country-details" class="sidebar hidden">
+        <!-- Sidebar for Country Details -->
+        <aside id="country-details" class="sidebar hidden">
             <h2 id="country-name">Country Name</h2>
             <ul>
-                <li>Capital: <span id="country-capital">Capital City</span></li>
-                <li>Time: <span id="country-time">Local Time</span></li>
-                <li>Population: <span id="country-population">Population</span></li>
-                <li>Weather: <span id="country-weather">Weather</span></li>
+                <li><strong>Capital:</strong> <span id="country-capital">Capital City</span></li>
+                <li><strong>Time:</strong> <span id="country-time">Local Time</span></li>
+                <li><strong>Population:</strong> <span id="country-population">Population</span></li>
+                <li><strong>Weather:</strong> <span id="country-weather">Weather</span></li>
             </ul>
-            <button id="close-sidebar">Close</button>
-        </div>
+            <button id="close-sidebar" aria-label="Close Country Details Sidebar">Close</button>
+        </aside>
     </main>
 
+    <!-- Footer -->
     <footer>
         <p>&copy; 2024 World Explorer. All Rights Reserved.</p>
     </footer>
 
+    <!-- Linking JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>

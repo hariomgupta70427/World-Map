@@ -1,3 +1,4 @@
+/* Global Styles */
 * {
     margin: 0;
     padding: 0;
@@ -5,140 +6,184 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #f0f8ff, #add8e6); /* Light gradient background */
     color: #333;
-    margin: 0;
-    padding: 0;
+    line-height: 1.6;
+    height: 100%;
+    overflow-x: hidden;
 }
 
+/* Header */
 header {
     text-align: center;
     padding: 20px;
-    background-color: #003366;
+    background: #003366;
     color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
-    font-size: 2rem;
+header h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
+/* Main Content */
 main {
-    flex: 1;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: row; /* Allows map and sidebar to exist side by side */
+    width: 100%;
+    height: 100vh; /* Full height */
     position: relative;
 }
 
+/* Fullscreen Map */
 .map-container {
-    width: 80%;
-    max-width: 1000px;
-    margin: 20px;
+    width: 100%; /* Default full width */
+    height: 100%;
+    transition: width 0.3s ease-in-out; /* Smooth resizing effect */
+    overflow: hidden;
+}
+
+.map-container.reduced {
+    width: calc(100% - 350px); /* Adjust width when sidebar is open */
 }
 
 #world-map {
     width: 100%;
-    height: auto;
-    border: 2px solid #ccc;
-    background-color: #22598f;
+    height: 100%;
+    background: #e0f7fa; /* Subtle background for map */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-#info-box {
-    position: absolute;
-    background-color: rgba(255, 255, 255, 0.9);
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    display: none;
-
-
-    
-    #info-box p {
-        margin: 0;
-    }
-    
-    #info-box.show {
-        opacity: 1;
-        display: block;
-    
+#world-map:hover {
+    transform: scale(1.01); /* Slight zoom effect */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
-
-#info-box.hidden {
-    opacity: 0;
-    display: none;
-}
-
-    
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* General styling */
-
-
-
-/* Sidebar styling */
+/* Sidebar for Country Details */
 .sidebar {
     position: fixed;
     top: 0;
-    right: -350px;
-    width: 300px;
+    right: -350px; /* Initially hidden */
+    width: 350px;
     height: 100%;
-    background-color: white;
-    border-left: 3px solid #003366;
+    background: #fff;
+    border-left: 5px solid #003366;
     padding: 20px;
     box-shadow: -4px 0 8px rgba(0, 0, 0, 0.1);
-    transition: right 0.3s ease;
+    transition: right 0.3s ease-in-out;
     z-index: 100;
+    overflow-y: auto;
 }
 
 .sidebar.show {
-    right: 0;
-}
-
-.sidebar.hidden {
-    right: -350px;
+    right: 0; /* Slide in from the right */
 }
 
 .sidebar h2 {
+    font-size: 1.8rem;
     color: #003366;
+    margin-bottom: 20px;
 }
 
 .sidebar ul {
-    list-style-type: none;
-    padding: 0;
+    list-style: none;
 }
 
 .sidebar ul li {
-    margin: 10px 0;
+    margin: 15px 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+.sidebar ul li span {
+    font-weight: bold;
+    color: #007acc;
 }
 
 button#close-sidebar {
-    background-color: #ff4444;
-    color: white;
+    background: #ff4d4d;
+    color: #fff;
     border: none;
-    padding: 10px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
     cursor: pointer;
-    margin-top: 20px;
+    transition: background 0.3s ease;
 }
 
 button#close-sidebar:hover {
-    background-color: #cc0000;
+    background: #cc0000;
 }
 
+/* Footer */
 footer {
     text-align: center;
     padding: 10px;
-    background-color: #003366;
+    background: #003366;
     color: white;
-    position: fixed;
-    bottom: 0;
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
     width: 100%;
+}
+
+/* Info Box */
+#info-box {
+    position: absolute;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transform: translateY(-20px);
+    z-index: 200;
+}
+
+#info-box.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+#info-box p {
+    margin: 5px 0;
+    color: #333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    main {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        bottom: 0;
+        top: auto;
+        right: 0;
+        transform: translateY(100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .sidebar.show {
+        transform: translateY(0);
+    }
+
+    button#close-sidebar {
+        width: 100%;
+        padding: 15px;
+        font-size: 1.2rem;
+    }
+
+    .map-container.reduced {
+        width: 100%; /* Full width on mobile when sidebar is open */
+    }
 }
