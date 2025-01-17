@@ -25,6 +25,11 @@ This project is a simple and interactive world map built using **HTML, CSS, and 
    ```
 
 2. Open `index.html` in your browser to view and interact with the map.
+
+## 📷 Screenshots
+
+![screenshot](Images/SS1.png)
+
 ## 🏆 Future Improvements
 
 - Adding country-specific data pop-ups.
