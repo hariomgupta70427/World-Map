@@ -47,39 +47,7 @@ This project is an interactive world map built using **HTML, CSS, and JavaScript
    git clone https://github.com/hariomgupta70427/World-Map.git
    ```
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Start the server:
-   ```bash
-   npm start
-   ```
-
-4. Open `http://localhost:5000` in your browser to view and interact with the map.
-
-### Deployment on Vercel
-
-1. Create a Vercel account if you don't have one: https://vercel.com/signup
-
-2. Install Vercel CLI:
-   ```bash
-   npm install -g vercel
-   ```
-
-3. Login to Vercel:
-   ```bash
-   vercel login
-   ```
-
-4. Deploy the project:
-   ```bash
-   vercel
-   ```
-
-5. Follow the prompts to complete the deployment.
-
+2. Open `index.html` in your browser to view and interact with the map.
 ## 🏆 Future Improvements
 
 - Adding search functionality to quickly find countries
