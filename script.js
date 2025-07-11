@@ -238,7 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             month: 'short',
                             day: 'numeric'
                         };
-                        countryTimeElement.textContent = date.toLocaleString(undefined, options);
+                        countryTimeElement.textContent = `${date.toLocaleString(undefined, options)} (IST)`;
                     } else {
                         countryTimeElement.textContent = "Time data unavailable";
                     }
@@ -247,7 +247,35 @@ document.addEventListener("DOMContentLoaded", () => {
                     countryTimeElement.textContent = "Error fetching time data";
                 }
             } else {
-                countryTimeElement.textContent = "Timezone unavailable";
+                // Even if timezone is not available, still fetch IST time
+                try {
+                    const timeResponse = await fetch(`/api/time?timezone=UTC+05:30`);
+                    if (!timeResponse.ok) {
+                        throw new Error(`Time API responded with status: ${timeResponse.status}`);
+                    }
+                    
+                    const timeData = await timeResponse.json();
+                    
+                    if (timeData.datetime) {
+                        const date = new Date(timeData.datetime);
+                        const options = { 
+                            hour: '2-digit', 
+                            minute: '2-digit',
+                            second: '2-digit',
+                            hour12: true,
+                            weekday: 'short',
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                        };
+                        countryTimeElement.textContent = `${date.toLocaleString(undefined, options)} (IST)`;
+                    } else {
+                        countryTimeElement.textContent = "Time data unavailable";
+                    }
+                } catch (timeError) {
+                    console.error("Error fetching time:", timeError);
+                    countryTimeElement.textContent = "Error fetching time data";
+                }
             }
 
             // Display additional info (region, subregion, flag, currencies)

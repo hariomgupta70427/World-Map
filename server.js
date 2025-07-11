@@ -58,41 +58,33 @@ app.get('/api/country', async (req, res) => {
   }
 });
 
-// Local time calculation
+// Local time calculation - always returns IST time
 app.get('/api/time', async (req, res) => {
   const { timezone } = req.query;
-  if (!timezone) return res.status(400).json({ error: 'Timezone is required' });
   
   try {
-    // Handle timezone directly
-    // Parse the timezone string to extract offset
-    let offset = 0;
-    
-    if (timezone.startsWith('UTC')) {
-      const offsetStr = timezone.substring(3); // Remove "UTC"
-      if (offsetStr) {
-        // Convert offset string (like "+01:00" or "-05:00") to hours
-        const sign = offsetStr.charAt(0) === '-' ? -1 : 1;
-        const parts = offsetStr.substring(1).split(':');
-        const hours = parseInt(parts[0], 10);
-        const minutes = parts.length > 1 ? parseInt(parts[1], 10) : 0;
-        offset = sign * (hours + minutes / 60);
-      }
-    }
-    
-    // Calculate current time with offset
+    // Always return IST time (UTC+5:30) regardless of the country's timezone
     const now = new Date();
     const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
-    const localTime = new Date(utcTime + (3600000 * offset));
+    
+    // IST is UTC+5:30 (5 hours and 30 minutes ahead of UTC)
+    const istOffset = 5.5; // 5 hours and 30 minutes
+    const istTime = new Date(utcTime + (3600000 * istOffset));
+    
+    // Format the date in a readable format
+    const formattedTime = istTime.toISOString();
     
     res.json({
-      datetime: localTime.toISOString(),
-      timezone: timezone,
-      utc_offset: offset >= 0 ? `+${offset}:00` : `${offset}:00`
+      datetime: formattedTime,
+      timezone: "UTC+05:30",
+      utc_offset: "+05:30",
+      timezone_location: "Indian Standard Time (IST)"
     });
+    
+    console.log(`Time API: Returned IST time ${formattedTime} for request with timezone ${timezone}`);
   } catch (err) {
     console.error('Time calculation error:', err.message);
-    res.status(500).json({ error: 'Failed to calculate time data' });
+    res.status(500).json({ error: 'Failed to calculate IST time data' });
   }
 });
 
