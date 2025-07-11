@@ -156,6 +156,31 @@ footer {
     color: #333;
 }
 
+/* Weather icon and details */
+.weather-icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+    width: 40px;
+    height: 40px;
+}
+
+.weather-details {
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.extra-info {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.error {
+    color: #e74c3c;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     main {

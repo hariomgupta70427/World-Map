@@ -1,0 +1,37 @@
+{
+  "name": "world-map",
+  "version": "1.0.0",
+  "description": "Interactive world map with country information",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hariomgupta70427/World-Map.git"
+  },
+  "keywords": [
+    "world-map",
+    "interactive",
+    "countries",
+    "geography"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/hariomgupta70427/World-Map/issues"
+  },
+  "homepage": "https://github.com/hariomgupta70427/World-Map#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.0.1",
+    "express": "^5.1.0",
+    "node-fetch": "^3.3.2"
+  }
+}
